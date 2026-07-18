@@ -24,9 +24,8 @@ export class TasklineSettingTab extends PluginSettingTab {
     const draft = createSettingsDraft(this.taskline.settings, this.taskline.rejectedSettingsRaw);
     const parseErrors = new Map<string, string>();
     containerEl.empty();
-    containerEl.createEl("h2", { text: "Taskline settings" });
     containerEl.createEl("p", {
-      text: "Changes remain a draft until Apply. Taskline never creates or changes task files from settings.",
+      text: "Changes remain a draft until you apply them. Taskline never creates or changes task files from settings.",
     });
 
     this.renderIssues(
@@ -47,7 +46,7 @@ export class TasklineSettingTab extends PluginSettingTab {
       }
       draftIssues.show();
       draftIssues.setAttr("role", "alert");
-      draftIssues.createEl("h3", { text: "Draft validation" });
+      new Setting(draftIssues).setName("Draft validation").setHeading();
       const list = draftIssues.createEl("ul");
       for (const message of messages) list.createEl("li", { text: message });
     };
@@ -95,7 +94,7 @@ export class TasklineSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Fallback capture destination")
-      .setDesc("JSON object with sourceId and a level-two heading, or null.")
+      .setDesc("JSON object with source ID and a level-two heading, or null.")
       .addTextArea((text) => {
         text.inputEl.rows = 3;
         text.setValue(JSON.stringify(draft.fallbackCaptureDestination, null, 2));
@@ -143,7 +142,7 @@ export class TasklineSettingTab extends PluginSettingTab {
     if (issues.length === 0) return;
     const block = this.containerEl.createDiv({ cls: "vt-settings-issues" });
     block.setAttr("role", "status");
-    block.createEl("h3", { text: title });
+    new Setting(block).setName(title).setHeading();
     const list = block.createEl("ul");
     for (const issue of issues) {
       list.createEl("li", { text: `${issue.level === "error" ? "Error" : "Warning"}: ${issue.path} - ${issue.message}` });

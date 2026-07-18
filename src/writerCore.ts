@@ -118,10 +118,10 @@ export async function runCrossFileMove<T>(operations: {
   const receipt = await operations.appendDestination();
   try {
     await operations.removeSource();
-  } catch (sourceError) {
+  } catch (sourceError: unknown) {
     try {
       await operations.rollbackDestination(receipt);
-    } catch (rollbackError) {
+    } catch (rollbackError: unknown) {
       throw new VtPartialMoveError(
         "taskline: source removal failed and the exact destination insertion could not be rolled back. The task may now exist in both files; verify both files and remove only the extra destination copy.",
         { sourceError, rollbackError }
@@ -198,7 +198,7 @@ function todayIso(): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
-export function cancelLine(task: VtTask, line: string, source?: string): string {
+export function cancelLine(line: string, source?: string): string {
   const annotated = source ? insertAnnotation(line, `(reconciled from ${source})`) : line;
   return insertAnnotation(setStatusChar(annotated, "-"), `❌ ${todayIso()}`);
 }
@@ -211,7 +211,7 @@ export function applyProposalText(
 ): string {
   const source = proposal.source ?? "proposal";
   const mutated = editLineText(content, task, (line) => proposal.action === "cancel"
-    ? cancelLine(task, line, source)
+    ? cancelLine(line, source)
     : completeLine(api, task, insertAnnotation(line, `(reconciled from ${source})`)));
   return editLineText(mutated, { rawLine: proposal.rawLine }, () => []);
 }

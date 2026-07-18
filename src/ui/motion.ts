@@ -6,7 +6,12 @@ export interface AnimToken {
   cancelled: boolean;
 }
 
-const CANCELLED = Symbol("vt-anim-cancelled");
+class AnimationCancelledError extends Error {
+  constructor() {
+    super("Taskline animation cancelled");
+    this.name = "AnimationCancelledError";
+  }
+}
 
 export function prefersReducedMotion(): boolean {
   return (
@@ -21,28 +26,26 @@ function sleep(ms: number): Promise<void> {
 }
 
 function checkpoint(token?: AnimToken): void {
-  if (token?.cancelled) throw CANCELLED;
+  if (token?.cancelled) throw new AnimationCancelledError();
 }
 
 export function isCancellation(err: unknown): boolean {
-  return err === CANCELLED;
+  return err instanceof AnimationCancelledError;
 }
 
 /** Collapses a row to zero height then resolves. One-shot max-height animation (allowed off
  * the typing path per DESIGN section 4). Reduced motion -> instant. */
 async function collapseRow(row: HTMLElement, reduced: boolean): Promise<void> {
   if (reduced) {
-    row.style.display = "none";
+    row.setCssStyles({ display: "none" });
     return;
   }
   const start = row.scrollHeight;
-  row.style.maxHeight = `${start}px`;
-  row.style.overflow = "hidden";
+  row.setCssStyles({ maxHeight: `${start}px`, overflow: "hidden" });
   // Force reflow so the transition has a start value to animate from.
   void row.offsetHeight;
   row.classList.add("vt-collapsing");
-  row.style.maxHeight = "0px";
-  row.style.opacity = "0";
+  row.setCssStyles({ maxHeight: "0px", opacity: "0" });
   await sleep(160);
 }
 
@@ -111,10 +114,7 @@ export function revertRow(row: HTMLElement): void {
     "vt-confirming",
     "vt-reduced"
   );
-  row.style.removeProperty("max-height");
-  row.style.removeProperty("overflow");
-  row.style.removeProperty("opacity");
-  row.style.removeProperty("display");
+  row.setCssStyles({ maxHeight: "", overflow: "", opacity: "", display: "" });
   const ring = row.querySelector(".vt-ring");
   ring?.setAttribute("aria-checked", "false");
 }

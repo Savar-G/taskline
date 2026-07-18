@@ -26,7 +26,7 @@ export default class TasklinePlugin extends Plugin {
 
   async onload(): Promise<void> {
     this.loaded = true;
-    const rawSettings = await this.loadData();
+    const rawSettings: unknown = await this.loadData();
     const loadedWorkspace = compileWorkspace(rawSettings);
     this.settingsLoadIssues = loadedWorkspace.issues.filter((issue) => issue.level === "error");
     this.rejectedSettingsRaw = this.settingsLoadIssues.length > 0 ? rawSettings : null;
@@ -37,8 +37,14 @@ export default class TasklinePlugin extends Plugin {
     this.addSettingTab(new TasklineSettingTab(this));
 
     this.registerView(VIEW_TYPE_TODAY, (leaf: WorkspaceLeaf) => new TodayView(leaf, this));
-    this.addRibbonIcon("check-circle", "Open Taskline Today", () => void this.openTodayView());
-    this.addCommand({ id: "open-today", name: "Open Today", callback: () => void this.openTodayView() });
+    this.addRibbonIcon("check-circle", "Open Taskline today", () => {
+      this.openTodayView().catch((error: unknown) => console.error("taskline: could not open Today view", error));
+    });
+    this.addCommand({
+      id: "open-today",
+      name: "Open today",
+      callback: () => this.openTodayView().catch((error: unknown) => console.error("taskline: could not open Today view", error)),
+    });
     this.addCommand({ id: "add-task", name: "Add task", callback: () => this.openCapture() });
 
     this.app.workspace.onLayoutReady(() => {
@@ -173,11 +179,11 @@ export default class TasklinePlugin extends Plugin {
   async openTodayView(): Promise<void> {
     const existingLeaf = this.app.workspace.getLeavesOfType(VIEW_TYPE_TODAY)[0];
     if (existingLeaf) {
-      this.app.workspace.revealLeaf(existingLeaf);
+      await this.app.workspace.revealLeaf(existingLeaf);
       return;
     }
     const leaf = this.app.workspace.getLeaf("tab");
     await leaf.setViewState({ type: VIEW_TYPE_TODAY, active: true });
-    this.app.workspace.revealLeaf(leaf);
+    await this.app.workspace.revealLeaf(leaf);
   }
 }

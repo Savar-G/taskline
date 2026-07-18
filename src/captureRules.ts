@@ -243,7 +243,7 @@ function parseProtectedTitle(input: string): ProtectedTitle | null {
     if (char !== '"') continue;
     if (i + 1 < input.length && !/\s/.test(input[i + 1])) return null;
     try {
-      const value = JSON.parse(input.slice(0, i + 1));
+      const value: unknown = JSON.parse(input.slice(0, i + 1));
       return typeof value === "string" ? { value, end: i + 1 } : null;
     } catch {
       return null;

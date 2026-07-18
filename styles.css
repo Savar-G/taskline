@@ -898,8 +898,8 @@
 .vt-capture-modal .vt-capture-input:hover,
 .vt-capture-modal .vt-capture-input:focus,
 .vt-capture-modal .vt-capture-input:active {
-  color: transparent !important;
-  background: transparent !important;
+  color: transparent;
+  background: transparent;
   -webkit-text-fill-color: transparent;
 }
 
@@ -1416,8 +1416,7 @@
 .vt-tok--date { --vt-tok-base: var(--vt-tok-date); }
 .vt-tok--scheduled {
   --vt-tok-base: var(--vt-tok-date);
-  text-decoration: underline dotted var(--vt-tok-date);
-  text-underline-offset: 3px;
+  border-bottom: 1px dotted var(--vt-tok-date);
 }
 .vt-tok--area { --vt-tok-base: var(--vt-tok-area); }
 .vt-tok--recurrence { --vt-tok-base: var(--vt-tok-recur); }
@@ -1448,6 +1447,7 @@
 /* the preview ring is display-only; drop the pointer affordance */
 .vt-capture-preview .vt-ring {
   cursor: default;
+  pointer-events: none;
 }
 
 /* destination indicator */
@@ -1696,6 +1696,7 @@
 .vt-row--done .vt-ring {
   --vt-ring-color: var(--vt-text-faint);
   background: color-mix(in srgb, var(--vt-text-faint) 30%, transparent);
+  pointer-events: none;
 }
 
 .vt-row--done:hover {
@@ -1756,8 +1757,7 @@
   .vt-task-row {
     display: grid;
     grid-template-columns: var(--vt-ring-size) minmax(0, 1fr);
-    column-gap: var(--vt-space-3);
-    row-gap: var(--vt-space-1);
+    gap: var(--vt-space-1) var(--vt-space-3);
   }
 
   .vt-ring {

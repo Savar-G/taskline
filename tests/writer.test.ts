@@ -63,7 +63,7 @@ describe("atomic text mutations", () => {
   });
 
   it("serializes cancellation without completion semantics", () => {
-    expect(cancelLine(makeTask({ title: "Drop" }), "- [ ] Drop")).toMatch(/^- \[-\] Drop ❌ \d{4}-\d{2}-\d{2}$/);
+    expect(cancelLine("- [ ] Drop")).toMatch(/^- \[-\] Drop ❌ \d{4}-\d{2}-\d{2}$/);
   });
 
   it("preserves CRLF while editing and appending", () => {

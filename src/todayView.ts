@@ -468,7 +468,7 @@ export class TodayView extends ItemView {
       const tasks = this.filtered(group.tasks);
       if (tasks.length === 0) continue;
       anyVisible = true;
-      if (group.mode === "by-heading") this.buildGroupedSourceSection(parent, group.label, tasks, today, group.color);
+      if (group.mode === "by-heading") this.buildGroupedSourceSection(parent, group.label, tasks, today);
       else this.buildTaskSection(parent, group.label, this.sortTasks(tasks), today, { dot: areaColor(group.key, this.plugin.workspace) });
     }
 
@@ -536,7 +536,7 @@ export class TodayView extends ItemView {
   }
 
   /** A by-heading source group renders one group header with source headings as sub-labels. */
-  private buildGroupedSourceSection(parent: HTMLElement, label: string, tasks: VtTask[], today: Date, color?: string): void {
+  private buildGroupedSourceSection(parent: HTMLElement, label: string, tasks: VtTask[], today: Date): void {
     const section = parent.createDiv({ cls: "vt-section" });
     this.buildSectionHead(section, label, tasks.length, { dot: areaColor(label, this.plugin.workspace) });
 
@@ -620,7 +620,6 @@ export class TodayView extends ItemView {
     row.removeAttribute("tabindex");
     const ring = row.querySelector<HTMLElement>(".vt-ring");
     if (ring) {
-      ring.style.pointerEvents = "none";
       ring.dataset.status = task.status;
       ring.removeAttribute("role");
       ring.setAttr("aria-hidden", "true");

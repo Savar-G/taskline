@@ -106,7 +106,7 @@ const SIGNIFIER_TOKEN =
   "|✅\\s*\\d{4}-\\d{2}-\\d{2}" +
   "|❌\\s*\\d{4}-\\d{2}-\\d{2}";
 
-const TRAILING_RUN_RE = new RegExp(`(?:\\s*(?:${SIGNIFIER_TOKEN}))+$`);
+const TRAILING_RUN_RE = new RegExp(`(?:\\s*(?:${SIGNIFIER_TOKEN}))+$`, "u");
 
 /** Inserts annotation text immediately before the trailing signifier run (or at the end of
  * the line if there is no such run), preserving the invariant. */

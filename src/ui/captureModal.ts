@@ -295,8 +295,8 @@ export abstract class CaptureModalBase extends Modal {
 
   private syncInputHeight(): void {
     if (!this.wrapsInput()) return;
-    this.input.style.height = "auto";
-    this.input.style.height = `${Math.min(this.input.scrollHeight, 160)}px`;
+    this.input.setCssStyles({ height: "auto" });
+    this.input.setCssStyles({ height: `${Math.min(this.input.scrollHeight, 160)}px` });
   }
 
   /** Repaints the highlight backdrop from the current parse. Synchronous and cheap so typing
@@ -376,7 +376,6 @@ export abstract class CaptureModalBase extends Modal {
       ring.removeAttribute("aria-checked");
       ring.removeAttribute("aria-label");
       ring.removeAttribute("tabindex");
-      ring.style.pointerEvents = "none";
     }
   }
 

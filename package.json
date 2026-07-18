@@ -1,8 +1,8 @@
 {
   "name": "taskline",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
-  "description": "Configurable task capture and Today view for Obsidian",
+  "description": "Configurable task capture and Today view.",
   "main": "main.js",
   "license": "MIT",
   "repository": {
@@ -16,6 +16,7 @@
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "lint": "eslint . --max-warnings 2",
     "test": "vitest run"
   },
   "keywords": [
@@ -25,7 +26,10 @@
     "productivity"
   ],
   "devDependencies": {
+    "@typescript-eslint/parser": "^8.64.0",
     "esbuild": "0.28.1",
+    "eslint": "^9.39.5",
+    "eslint-plugin-obsidianmd": "^0.4.1",
     "obsidian": "^1.13.1",
     "tslib": "2.6.2",
     "typescript": "5.9.3",

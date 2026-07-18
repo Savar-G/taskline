@@ -94,7 +94,7 @@ export function parseTaskLine(line: string, ctx: ParseCtx): VtTask | null {
 
   // recurrence - everything after 🔁 up to the next signifier emoji or end of string
   let recurrence: string | undefined;
-  const recRe = new RegExp(`🔁\\s*([^${SIGNIFIER_CLASS}]*)`);
+  const recRe = new RegExp(`🔁\\s*([^${SIGNIFIER_CLASS}]*)`, "u");
   const recMatch = work.match(recRe);
   if (recMatch) {
     recurrence = recMatch[1].trim();

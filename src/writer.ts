@@ -8,9 +8,7 @@ import {
   assertSameFileProposal,
   blockLength,
   completeLine,
-  cancelLine,
   editLineText,
-  joinText,
   locateLine,
   moveTaskWithinText,
   rollbackInsertedBlockText,
@@ -20,7 +18,6 @@ import {
   TasksPluginApiV1,
   VtRecurrenceUnavailableError,
   InsertedBlockReceipt,
-  VtPartialMoveError,
   VtStaleError,
 } from "./writerCore";
 

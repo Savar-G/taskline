@@ -33,7 +33,7 @@ Taskline does not connect to meeting or messaging services itself. Your capture 
 
 ## Requirements
 
-- Obsidian 1.5.0 or later
+- Obsidian 1.7.2 or later
 - Markdown task notes that use `- [ ] Task` syntax
 - The [Tasks plugin](https://github.com/obsidian-tasks-group/obsidian-tasks) only if you complete recurring tasks through Taskline
 

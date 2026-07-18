@@ -1,10 +1,10 @@
 {
   "id": "vault-tasks",
   "name": "Taskline",
-  "version": "0.1.0",
-  "minAppVersion": "1.5.0",
-  "description": "Configurable task capture and Today view for Obsidian",
+  "version": "0.1.1",
+  "minAppVersion": "1.7.2",
+  "description": "Configurable task capture and Today view.",
   "author": "Taskline contributors",
-  "authorUrl": "https://github.com/Savar-G/taskline",
+  "authorUrl": "https://github.com/Savar-G",
   "isDesktopOnly": false
 }
