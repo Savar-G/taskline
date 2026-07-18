@@ -7,8 +7,8 @@ type CollectionKey = "sources" | "sourceGroups" | "areas" | "captureRoutes" | "t
 const SECTIONS: Array<{ key: CollectionKey; name: string; description: string }> = [
   { key: "sources", name: "Task sources", description: "JSON array of sources: id, label, path, role, optional groupId, editPolicy, and proposals." },
   { key: "sourceGroups", name: "Source groups", description: "JSON array of groups: id, label, mode, ownerDisplay, and optional color." },
-  { key: "areas", name: "Areas", description: "JSON array of areas: id, label, sourceId, heading, and optional color." },
-  { key: "captureRoutes", name: "Capture routes", description: "Ordered JSON array of tag routes with aliases, destination, keywords, and showAsChip." },
+  { key: "areas", name: "Areas", description: "JSON array of areas: id, label, sourceId, level-two heading, and optional color." },
+  { key: "captureRoutes", name: "Capture routes", description: "Ordered JSON array of tag routes with aliases, a level-two heading destination, keywords, and showAsChip." },
   { key: "tagFilters", name: "Tag filters", description: "JSON array of generic tag filters: tag, label, and optional color." },
   { key: "displayOrder", name: "Display order", description: "JSON array of area and source-group IDs." },
   { key: "ownerSelfAliases", name: "Owner self aliases", description: "JSON array of owner names that should not render as owner chips." },
@@ -95,7 +95,7 @@ export class TasklineSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Fallback capture destination")
-      .setDesc("JSON object with sourceId and heading, or null.")
+      .setDesc("JSON object with sourceId and a level-two heading, or null.")
       .addTextArea((text) => {
         text.inputEl.rows = 3;
         text.setValue(JSON.stringify(draft.fallbackCaptureDestination, null, 2));

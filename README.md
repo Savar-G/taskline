@@ -4,6 +4,8 @@ Taskline is an Obsidian task dashboard and quick-capture plugin. It reads tasks 
 
 Taskline does not create task notes during setup. You keep control of every source path, heading, route, and display group.
 
+![Taskline Today view with three example tasks](assets/taskline-today.png)
+
 ## Features
 
 - Today, Upcoming, and All task views
@@ -38,7 +40,7 @@ The folder is named `vault-tasks` because Obsidian requires it to match the stab
 
 ## Configure
 
-Open **Settings** -> **Taskline**. Taskline starts unconfigured and inactive. Add the source notes and headings you want, then select **Apply**.
+Open **Settings** -> **Taskline**. Taskline starts unconfigured and inactive. Add the source notes and level-two (`##`) task headings you want, then select **Apply**.
 
 The settings UI accepts JSON arrays so related routes and groups can be edited together. This minimal configuration reads one note and captures new tasks under its `Inbox` heading:
 
@@ -85,7 +87,7 @@ The settings UI accepts JSON arrays so related routes and groups can be edited t
 }
 ```
 
-Source paths must be relative to the vault. Taskline rejects absolute paths and paths containing `..`.
+Source paths must be relative to the vault. Taskline rejects absolute paths and paths containing `..`. Configured destinations must already exist as level-two headings; Taskline never creates notes or headings implicitly.
 
 ## Capture Tasks
 

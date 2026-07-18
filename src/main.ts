@@ -38,8 +38,8 @@ export default class TasklinePlugin extends Plugin {
 
     this.registerView(VIEW_TYPE_TODAY, (leaf: WorkspaceLeaf) => new TodayView(leaf, this));
     this.addRibbonIcon("check-circle", "Open Taskline Today", () => void this.openTodayView());
-    this.addCommand({ id: "open-today", name: "Taskline: Open Today", callback: () => void this.openTodayView() });
-    this.addCommand({ id: "add-task", name: "Taskline: Add task", callback: () => this.openCapture() });
+    this.addCommand({ id: "open-today", name: "Open Today", callback: () => void this.openTodayView() });
+    this.addCommand({ id: "add-task", name: "Add task", callback: () => this.openCapture() });
 
     this.app.workspace.onLayoutReady(() => {
       if (!this.loaded) return;

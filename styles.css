@@ -36,8 +36,8 @@
   --vt-stale-warn: var(--color-yellow);
   --vt-stale-alert: var(--color-red);
   --vt-recur: var(--text-muted);
-  --vt-due-today: var(--color-green);      /* due/scheduled today, Todoist-green */
-  --vt-due-tomorrow: var(--color-orange);  /* due/scheduled tomorrow */
+  --vt-due-today: var(--text-success, var(--text-normal));
+  --vt-due-tomorrow: var(--text-warning, var(--text-normal));
 
   /* capture token tint bases (section 5); priority reuses --vt-p1..p3 */
   --vt-tok-date: var(--color-purple);
@@ -336,6 +336,12 @@
   transition: transform 80ms var(--vt-ease-std), background-color 120ms var(--vt-ease-out);
 }
 
+.vt-ring::before {
+  content: "";
+  position: absolute;
+  inset: calc((var(--vt-hit) - var(--vt-ring-size)) / -2);
+}
+
 .vt-ring[data-priority="p1"] { --vt-ring-color: var(--vt-p1); }
 .vt-ring[data-priority="p2"] { --vt-ring-color: var(--vt-p2); }
 .vt-ring[data-priority="p3"] { --vt-ring-color: var(--vt-p3); }
@@ -437,15 +443,17 @@
 }
 
 .vt-date-pill--today {
-  color: var(--vt-due-today);
+  color: var(--vt-text);
+  background: color-mix(in srgb, var(--vt-due-today) 12%, transparent);
 }
 
 .vt-date-pill--tomorrow {
-  color: var(--vt-due-tomorrow);
+  color: var(--vt-text);
+  background: color-mix(in srgb, var(--vt-due-tomorrow) 12%, transparent);
 }
 
 .vt-date-pill--overdue {
-  color: var(--vt-p1);
+  color: var(--text-error, var(--vt-text));
   background: color-mix(in srgb, var(--vt-p1) 12%, transparent);
 }
 
@@ -682,12 +690,6 @@
 
 /* ---- mobile ------------------------------------------------------------- */
 
-.vt-mobile .vt-ring::before {
-  content: "";
-  position: absolute;
-  inset: calc((var(--vt-hit) - var(--vt-ring-size)) / -2);
-}
-
 .vt-mobile .vt-task-row {
   align-items: flex-start;
 }
@@ -827,6 +829,10 @@
   left: 0;
   right: 0;
   bottom: 0;
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   border-radius: var(--vt-radius-m) var(--vt-radius-m) 0 0;
   padding-bottom: env(safe-area-inset-bottom, 0px);
   animation: vt-sheet-up 140ms var(--vt-ease-out);
@@ -1707,13 +1713,13 @@
   padding: 0;
   font-size: var(--font-ui-smaller);
   line-height: 1;
-  color: var(--vt-text-faint);
+  color: var(--vt-text);
   background: transparent;
   border: none;
   box-shadow: none;
   border-radius: var(--vt-radius-s);
   cursor: pointer;
-  opacity: 0.68;
+  opacity: 1;
   transition: opacity 100ms var(--vt-ease-out), color 100ms var(--vt-ease-out), background-color 100ms var(--vt-ease-out);
 }
 
