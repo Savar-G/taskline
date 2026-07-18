@@ -16,6 +16,21 @@ Taskline does not create task notes during setup. You keep control of every sour
 - Local-only operation with no accounts, telemetry, or network requests
 - Optional proposal rows for reviewing suggested completions or cancellations
 
+## Example Workflow
+
+Your next actions already exist. They are just scattered across meeting notes, transcripts, and messages.
+
+Here is one way to turn that noise into a single execution queue:
+
+1. Capture meeting notes with a tool such as Granola or Google Meet's Gemini notes, then save them to your Obsidian vault.
+2. Ask an AI agent to review those notes and write your action items as Markdown tasks under the headings Taskline reads.
+3. Point Taskline at those notes. New action items automatically appear alongside the rest of your work in Today, Upcoming, and All.
+4. Add Slack the same way: run an agent each night to review selected conversations, extract the tasks assigned to you, and write them to a configured note in your vault.
+
+Instead of rereading every transcript and message to reconstruct what you owe, you open one view and start executing. Taskline is the final mile between agent-generated action items and the work you need to do.
+
+Taskline does not connect to meeting or messaging services itself. Your capture tools and agents write the Markdown; Taskline stays local and turns the notes you choose into a focused task system.
+
 ## Requirements
 
 - Obsidian 1.5.0 or later
