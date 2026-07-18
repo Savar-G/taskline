@@ -1,0 +1,34 @@
+{
+  "name": "taskline",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Configurable task capture and Today view for Obsidian",
+  "main": "main.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Savar-G/taskline.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Savar-G/taskline/issues"
+  },
+  "homepage": "https://github.com/Savar-G/taskline#readme",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "obsidian",
+    "plugin",
+    "tasks",
+    "productivity"
+  ],
+  "devDependencies": {
+    "esbuild": "0.28.1",
+    "obsidian": "^1.13.1",
+    "tslib": "2.6.2",
+    "typescript": "5.9.3",
+    "vitest": "^4.1.9"
+  }
+}

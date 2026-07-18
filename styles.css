@@ -1,0 +1,1823 @@
+/* Taskline styles use Obsidian theme variables through --vt-* tokens. Tints use
+   color-mix so they work across themes without assuming RGB channel variables. */
+
+.vt-settings-json {
+  width: min(100%, 42rem);
+  min-height: 8rem;
+  font-family: var(--font-monospace);
+  resize: vertical;
+}
+
+.vt-settings-issues {
+  margin: var(--size-4-3) 0;
+  padding: var(--size-4-3);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  background: var(--background-secondary);
+}
+
+.vault-tasks-view,
+.vt-capture-modal {
+  /* color */
+  --vt-bg: var(--background-primary);
+  --vt-bg-alt: var(--background-secondary);
+  --vt-bg-hover: var(--background-modifier-hover);
+  --vt-bg-active: var(--background-modifier-active-hover);
+  --vt-border: var(--background-modifier-border);
+  --vt-text: var(--text-normal);
+  --vt-text-muted: var(--text-muted);
+  --vt-text-faint: var(--text-faint);
+  --vt-accent: var(--interactive-accent);
+  --vt-accent-text: var(--text-on-accent);
+  --vt-p1: var(--color-red);
+  --vt-p2: var(--color-orange);
+  --vt-p3: var(--color-blue);
+  --vt-p4: var(--text-faint);
+  --vt-stale-warn: var(--color-yellow);
+  --vt-stale-alert: var(--color-red);
+  --vt-recur: var(--text-muted);
+  --vt-due-today: var(--color-green);      /* due/scheduled today, Todoist-green */
+  --vt-due-tomorrow: var(--color-orange);  /* due/scheduled tomorrow */
+
+  /* capture token tint bases (section 5); priority reuses --vt-p1..p3 */
+  --vt-tok-date: var(--color-purple);
+  --vt-tok-area: var(--color-green);
+  --vt-tok-recur: var(--color-cyan);
+
+  /* tint strength (alpha percentages, lifted slightly on dark themes) */
+  --vt-tint: 14%;
+  --vt-tint-strong: 22%;
+
+  /* spacing */
+  --vt-space-0: 2px;
+  --vt-space-1: 4px;
+  --vt-space-2: 8px;
+  --vt-space-3: 12px;
+  --vt-space-4: 16px;
+  --vt-space-5: 24px;
+  --vt-space-6: 32px;
+
+  /* radius */
+  --vt-radius-pill: 999px;
+  --vt-radius-s: var(--radius-s);
+  --vt-radius-m: var(--radius-m);
+
+  /* type */
+  --vt-header-size: 28px;
+  --vt-fab-glyph: 28px;
+
+  /* sizing */
+  --vt-ring-size: 18px;
+  --vt-ring-stroke: 2px;
+  --vt-row-min-h: 40px;
+  --vt-hit: 44px;
+  --vt-focus-ring: 0 0 0 2px var(--vt-accent);
+
+  /* easing */
+  --vt-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --vt-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --vt-ease-std: cubic-bezier(0.4, 0, 0.2, 1);
+
+  color: var(--vt-text);
+}
+
+.vault-tasks-view {
+  min-height: 100%;
+  container-type: inline-size;
+  padding: var(--vt-space-5) var(--vt-space-4);
+  background: var(--vt-bg);
+  overflow-y: auto;
+}
+
+.theme-dark .vault-tasks-view,
+.theme-dark .vt-capture-modal {
+  --vt-tint: 18%;
+  --vt-tint-strong: 28%;
+}
+
+.vault-tasks-view.vt-mobile {
+  --vt-ring-size: 22px;
+  --vt-row-min-h: 56px;
+  --vt-header-size: 34px;
+}
+
+/* ---- header ------------------------------------------------------------- */
+
+/* Constrain the reading column on wide panes so the right-aligned metadata cluster
+ * stays within one eye-span of the title (Todoist-style list width). */
+.vt-header,
+.vt-sections,
+.vt-footer {
+  width: 100%;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.vt-header {
+  /* Steps down in even space-3/4 increments: header -> tabs (16) -> pills (12) -> section (16). */
+  margin-bottom: var(--vt-space-4);
+}
+
+.vt-title {
+  margin: 0;
+  font-size: var(--vt-header-size);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--vt-text);
+}
+
+.vt-subtitle {
+  margin-top: var(--vt-space-1);
+  font-size: var(--font-ui-small);
+  color: var(--vt-text-muted);
+}
+
+/* ---- sections ----------------------------------------------------------- */
+
+.vt-sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vt-space-5);
+}
+
+.vt-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.vt-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--vt-space-2);
+  padding: 0 var(--vt-space-4) var(--vt-space-1);
+}
+
+.vt-section-label {
+  font-size: var(--font-ui-smaller);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--vt-text-muted);
+}
+
+.vt-section-count {
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-faint);
+}
+
+.vt-section-empty {
+  padding: var(--vt-space-2) var(--vt-space-4) var(--vt-space-3);
+}
+
+/* Today acknowledges the undated backlog without rendering it into the daily plan. */
+.vault-tasks-view button.vt-triage-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 36px;
+  gap: var(--vt-space-2);
+  padding: var(--vt-space-2) var(--vt-space-4);
+  color: var(--vt-text-muted);
+  background: transparent;
+  border: 1px solid var(--vt-border);
+  box-shadow: none;
+  border-radius: var(--vt-radius-s);
+  cursor: pointer;
+  text-align: left;
+}
+
+.vault-tasks-view button.vt-triage-link:hover {
+  color: var(--vt-text);
+  background: var(--vt-bg-hover);
+}
+
+.vt-triage-link:focus-visible {
+  outline: none;
+  box-shadow: var(--vt-focus-ring);
+}
+
+.vt-triage-icon {
+  display: inline-flex;
+  color: var(--vt-text-faint);
+}
+
+.vt-triage-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.vt-triage-label {
+  font-size: var(--font-ui-small);
+  font-weight: 600;
+}
+
+.vt-triage-hint {
+  margin-left: auto;
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-faint);
+}
+
+.vt-triage-arrow {
+  color: var(--vt-text-faint);
+}
+
+.vt-mobile .vt-triage-link {
+  min-height: var(--vt-hit);
+}
+
+.vt-empty-line1 {
+  font-size: var(--font-ui-small);
+  color: var(--vt-text);
+}
+
+.vt-empty-line2 {
+  font-size: var(--font-ui-small);
+  color: var(--vt-text-muted);
+}
+
+/* ---- lists + inset dividers --------------------------------------------- */
+
+.vt-list > .vt-focusable {
+  position: relative;
+}
+
+.vt-list > .vt-focusable:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(var(--vt-space-4) + var(--vt-ring-size) + var(--vt-space-3));
+  right: var(--vt-space-4);
+  border-top: 1px solid var(--vt-border);
+}
+
+/* ---- task row ----------------------------------------------------------- */
+
+.vt-task-row {
+  display: flex;
+  align-items: center;
+  gap: var(--vt-space-3);
+  min-height: var(--vt-row-min-h);
+  padding: var(--vt-space-2) var(--vt-space-4);
+  border-radius: var(--vt-radius-s);
+  transition: background-color 100ms var(--vt-ease-out);
+  cursor: default;
+}
+
+.vt-task-row:hover {
+  background: var(--vt-bg-hover);
+}
+
+.vt-focusable:focus-visible {
+  outline: none;
+  background: var(--vt-bg-hover);
+}
+
+.vt-focusable:focus-visible .vt-ring {
+  box-shadow: var(--vt-focus-ring);
+}
+
+.vt-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--vt-space-2);
+}
+
+.vt-row-main--editable {
+  cursor: pointer;
+}
+
+.vt-row-main--editable:hover .vt-task-title {
+  color: var(--vt-accent);
+}
+
+.vt-task-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-ui-medium);
+  color: var(--vt-text);
+}
+
+.vt-task-title--muted {
+  color: var(--vt-text-muted);
+}
+
+.vt-blocked-dot {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--vt-p1) 55%, transparent);
+}
+
+.vt-row-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--vt-space-2);
+  flex-shrink: 0;
+}
+
+/* ---- priority ring ------------------------------------------------------ */
+
+.vt-ring {
+  --vt-ring-color: var(--vt-p4);
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--vt-ring-size);
+  height: var(--vt-ring-size);
+  border: var(--vt-ring-stroke) solid var(--vt-ring-color);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 80ms var(--vt-ease-std), background-color 120ms var(--vt-ease-out);
+}
+
+.vt-ring[data-priority="p1"] { --vt-ring-color: var(--vt-p1); }
+.vt-ring[data-priority="p2"] { --vt-ring-color: var(--vt-p2); }
+.vt-ring[data-priority="p3"] { --vt-ring-color: var(--vt-p3); }
+.vt-ring[data-priority="p4"] { --vt-ring-color: var(--vt-p4); }
+
+/* in-progress: interior half filled to read as "started" without a badge */
+.vt-ring[data-status="in-progress"] {
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--vt-ring-color) 50%, transparent) 50%,
+    transparent 50%
+  );
+}
+
+/* planning: dashed ring */
+.vt-ring[data-status="planning"] {
+  border-style: dashed;
+}
+
+.vt-task-row:hover .vt-ring:not([data-status="in-progress"]) {
+  background: color-mix(in srgb, var(--vt-ring-color) var(--vt-tint), transparent);
+}
+
+.vt-ring:active {
+  transform: scale(0.92);
+  background: color-mix(in srgb, var(--vt-ring-color) var(--vt-tint-strong), transparent);
+}
+
+/* check glyph inside the ring, hidden until completion */
+.vt-check {
+  position: absolute;
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  opacity: 0;
+}
+
+.vt-check path {
+  stroke: var(--vt-accent-text);
+  stroke-width: 3;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* completion sequence (DESIGN section 4) */
+.vt-completing .vt-ring {
+  background: var(--vt-ring-color);
+  border-color: var(--vt-ring-color);
+}
+
+.vt-completing .vt-check {
+  opacity: 1;
+}
+
+.vt-completing .vt-check path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 180ms var(--vt-ease-out);
+}
+
+.vt-check-flash .vt-check {
+  animation: vt-check-pop 140ms var(--vt-ease-out);
+}
+
+@keyframes vt-check-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.vt-fading {
+  opacity: 0.5;
+  transition: opacity 200ms var(--vt-ease-in);
+}
+
+.vt-fading .vt-task-title {
+  text-decoration: line-through;
+  color: var(--vt-text-faint);
+}
+
+.vt-collapsing {
+  transition: max-height 160ms var(--vt-ease-in), opacity 160ms var(--vt-ease-in);
+}
+
+/* ---- date pill ---------------------------------------------------------- */
+
+.vt-date-pill {
+  padding: var(--vt-space-1) var(--vt-space-2);
+  border-radius: var(--vt-radius-pill);
+  font-size: var(--font-ui-small);
+  color: var(--vt-text-muted);
+  white-space: nowrap;
+}
+
+/* State modifiers, low-to-high precedence via source order (equal specificity): a scheduled-only
+   pill is faint italic, but a today/tomorrow/overdue date recolors it while keeping the italic. */
+.vt-date-pill--scheduled {
+  color: var(--vt-text-faint);
+  font-style: italic;
+}
+
+.vt-date-pill--today {
+  color: var(--vt-due-today);
+}
+
+.vt-date-pill--tomorrow {
+  color: var(--vt-due-tomorrow);
+}
+
+.vt-date-pill--overdue {
+  color: var(--vt-p1);
+  background: color-mix(in srgb, var(--vt-p1) 12%, transparent);
+}
+
+/* ---- area chip ---------------------------------------------------------- */
+
+.vt-area-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--vt-space-1) var(--vt-space-2);
+  border-radius: var(--vt-radius-pill);
+  font-size: var(--font-ui-small);
+  white-space: nowrap;
+  transition: background-color 100ms var(--vt-ease-out);
+}
+
+.vt-area-chip:hover {
+  background: color-mix(in srgb, var(--vt-area-color, var(--vt-text-muted)) var(--vt-tint), transparent);
+}
+
+/* The '#' glyph carries the full area accent (set per chip as --vt-area-color); label stays muted. */
+.vt-area-hash {
+  color: var(--vt-area-color, var(--vt-text-faint));
+}
+
+.vt-area-label {
+  color: var(--vt-text-muted);
+}
+
+/* ---- owner chips -------------------------------------------------------- */
+
+.vt-owner-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--vt-space-1) var(--vt-space-2);
+  border-radius: var(--vt-radius-pill);
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-muted);
+  background: var(--vt-bg-hover);
+}
+
+/* ---- recurrence + stale ------------------------------------------------- */
+
+.vt-recur {
+  font-size: var(--font-ui-small);
+  color: var(--vt-recur);
+}
+
+.vt-stale-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-left: var(--vt-space-0);
+}
+
+.vt-stale-dot[data-level="warn"] { background: var(--vt-stale-warn); }
+.vt-stale-dot[data-level="alert"] { background: var(--vt-stale-alert); }
+
+/* ---- proposed row ------------------------------------------------------- */
+
+.vt-proposed-row {
+  padding: var(--vt-space-2) var(--vt-space-4);
+  border-radius: var(--vt-radius-s);
+  opacity: 0.85;
+  transition: opacity 200ms var(--vt-ease-out), background-color 100ms var(--vt-ease-out);
+}
+
+.vt-proposed-row:hover {
+  opacity: 0.92;
+  background: var(--vt-bg-hover);
+}
+
+.vt-proposed-top {
+  display: flex;
+  align-items: center;
+  gap: var(--vt-space-3);
+}
+
+.vt-ring--ghost {
+  border: var(--vt-ring-stroke) dashed var(--vt-border);
+  cursor: default;
+}
+
+.vt-proposed-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-ui-medium);
+  font-weight: 400;
+  color: var(--vt-text);
+}
+
+.vt-proposed-actions {
+  display: flex;
+  gap: var(--vt-space-1);
+  flex-shrink: 0;
+}
+
+.vt-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 var(--vt-space-2);
+  border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-s);
+  background: transparent;
+  color: var(--vt-text-muted);
+  cursor: pointer;
+  transition: background-color 100ms var(--vt-ease-out), color 100ms var(--vt-ease-out);
+}
+
+.vt-action--confirm:hover {
+  color: var(--vt-accent);
+  background: color-mix(in srgb, var(--vt-accent) var(--vt-tint), transparent);
+  border-color: color-mix(in srgb, var(--vt-accent) 40%, transparent);
+}
+
+.vt-action--reject:hover {
+  color: var(--vt-p1);
+  background: color-mix(in srgb, var(--vt-p1) var(--vt-tint), transparent);
+  border-color: color-mix(in srgb, var(--vt-p1) 40%, transparent);
+}
+
+.vt-proposed-evidence {
+  display: flex;
+  align-items: baseline;
+  gap: var(--vt-space-1);
+  padding-left: calc(var(--vt-ring-size) + var(--vt-space-3));
+  margin-top: var(--vt-space-1);
+  font-size: var(--font-ui-small);
+  color: var(--vt-text-faint);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.vt-evidence-arrow {
+  flex-shrink: 0;
+}
+
+.vt-evidence-quote {
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vt-evidence-source {
+  flex-shrink: 0;
+}
+
+/* confirm: ghost resolves toward solid before collapsing out */
+.vt-confirming {
+  opacity: 1;
+}
+
+.vt-confirming .vt-ring--ghost {
+  border-style: solid;
+  border-color: var(--vt-accent);
+}
+
+.vt-rejecting {
+  opacity: 0;
+}
+
+/* ---- empty state -------------------------------------------------------- */
+
+.vt-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--vt-space-2);
+  padding: var(--vt-space-6) var(--vt-space-4);
+  margin-top: var(--vt-space-5);
+  border-radius: var(--vt-radius-m);
+  background: var(--vt-bg-alt);
+  text-align: center;
+}
+
+.vt-empty-glyph {
+  font-size: var(--vt-header-size);
+  color: var(--vt-text-faint);
+  line-height: 1;
+}
+
+.vt-empty-title {
+  font-size: var(--font-ui-medium);
+  color: var(--vt-text);
+}
+
+.vt-empty-sub {
+  font-size: var(--font-ui-small);
+  color: var(--vt-text-muted);
+}
+
+.vt-empty-add {
+  margin-top: var(--vt-space-2);
+  padding: var(--vt-space-1) var(--vt-space-4);
+  border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-s);
+  background: transparent;
+  color: var(--vt-text-muted);
+  cursor: pointer;
+}
+
+.vt-empty-add:hover {
+  background: var(--vt-bg-hover);
+  color: var(--vt-text);
+}
+
+/* ---- loading + row note + footer ---------------------------------------- */
+
+.vt-loading {
+  padding: var(--vt-space-6) var(--vt-space-4);
+  color: var(--vt-text-faint);
+  font-size: var(--font-ui-small);
+}
+
+.vt-row-note {
+  padding: var(--vt-space-1) var(--vt-space-4);
+  font-size: var(--font-ui-small);
+  color: var(--vt-text-muted);
+}
+
+.vt-footer {
+  margin-top: var(--vt-space-6);
+  padding-top: var(--vt-space-3);
+  border-top: 1px solid var(--vt-border);
+  color: var(--vt-text-faint);
+  font-size: var(--font-ui-smaller);
+}
+
+/* ---- mobile ------------------------------------------------------------- */
+
+.vt-mobile .vt-ring::before {
+  content: "";
+  position: absolute;
+  inset: calc((var(--vt-hit) - var(--vt-ring-size)) / -2);
+}
+
+.vt-mobile .vt-task-row {
+  align-items: flex-start;
+}
+
+.vt-mobile .vt-row-main {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--vt-space-1);
+  padding-top: var(--vt-space-1);
+}
+
+/* metadata wraps to a second line below the title on mobile */
+.vt-mobile .vt-task-row {
+  flex-wrap: wrap;
+}
+
+.vt-mobile .vt-row-meta {
+  flex-basis: 100%;
+  padding-left: calc(var(--vt-ring-size) + var(--vt-space-3));
+  flex-wrap: wrap;
+}
+
+.vt-mobile .vt-action {
+  min-width: var(--vt-hit);
+  height: var(--vt-hit);
+}
+
+/* ---- header add affordance ---------------------------------------------- */
+
+.vt-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--vt-space-3);
+}
+
+.vt-header-titles {
+  min-width: 0;
+}
+
+.vt-header-add {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: var(--font-ui-medium);
+  line-height: 1;
+  border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-s);
+  background: transparent;
+  color: var(--vt-text-muted);
+  cursor: pointer;
+  transition: background-color 100ms var(--vt-ease-out), color 100ms var(--vt-ease-out);
+}
+
+.vt-header-add:hover {
+  background: var(--vt-bg-hover);
+  color: var(--vt-text);
+}
+
+.vt-header-add:focus-visible {
+  outline: none;
+  box-shadow: var(--vt-focus-ring);
+}
+
+.vt-action:focus-visible,
+.vt-empty-add:focus-visible {
+  outline: none;
+  box-shadow: var(--vt-focus-ring);
+}
+
+/* ---- mobile FAB --------------------------------------------------------- */
+
+.vt-mobile-host {
+  position: relative;
+}
+
+.vt-fab {
+  position: fixed;
+  right: calc(var(--vt-space-5) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--vt-space-5) + env(safe-area-inset-bottom, 0px));
+  z-index: var(--layer-modal, 100);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--vt-accent);
+  color: var(--vt-accent-text);
+  box-shadow: var(--shadow-s, 0 2px 8px color-mix(in srgb, var(--vt-text) 25%, transparent));
+  cursor: pointer;
+  transition: transform 80ms var(--vt-ease-out);
+}
+
+.vt-fab:active {
+  transform: scale(0.94);
+}
+
+.vt-fab:focus-visible {
+  outline: none;
+  box-shadow: var(--vt-focus-ring);
+}
+
+.vt-fab-plus {
+  font-size: var(--vt-fab-glyph);
+  line-height: 1;
+  font-weight: 400;
+}
+
+/* ---- capture modal ------------------------------------------------------ */
+
+.vt-capture-modal {
+  width: 560px;
+  max-width: 92vw;
+  background: var(--vt-bg-alt);
+  border-radius: var(--vt-radius-m);
+  animation: vt-modal-open 140ms var(--vt-ease-out);
+}
+
+@keyframes vt-modal-open {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* mobile bottom sheet: full-width, slides up, keyboard-aware via safe-area inset */
+.vt-capture-modal--sheet {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--vt-radius-m) var(--vt-radius-m) 0 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  animation: vt-sheet-up 140ms var(--vt-ease-out);
+}
+
+@keyframes vt-sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.vt-capture-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--vt-space-3);
+  padding: var(--vt-space-2) 0;
+}
+
+/* input + highlight backdrop share identical box metrics so the overlay aligns */
+.vt-capture-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.vt-capture-backdrop,
+.vt-capture-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--vt-space-2) var(--vt-space-3);
+  font-family: var(--font-interface);
+  font-size: var(--font-ui-medium);
+  line-height: 1.5;
+  letter-spacing: 0;
+  border: 1px solid transparent;
+  white-space: pre;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.vt-capture-backdrop {
+  position: absolute;
+  inset: 0;
+  color: var(--vt-text);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.vt-capture-input {
+  position: relative;
+  z-index: 1;
+  display: block;
+  resize: none;
+  color: transparent;
+  caret-color: var(--vt-accent);
+  background: transparent;
+  border-color: var(--vt-border);
+  border-radius: var(--vt-radius-s);
+}
+
+/* Theme button/input hover rules must never paint over the mirror backdrop. The native control
+   carries the caret and selection only; visible text belongs to .vt-capture-backdrop. */
+.vt-capture-modal .vt-capture-input,
+.vt-capture-modal .vt-capture-input:hover,
+.vt-capture-modal .vt-capture-input:focus,
+.vt-capture-modal .vt-capture-input:active {
+  color: transparent !important;
+  background: transparent !important;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Editing existing text is a review task, not a one-line command. It wraps naturally and
+   reserves no overlay space, so long titles remain visible from first word to last. */
+.vt-edit-modal {
+  width: 680px;
+  max-width: calc(100vw - 32px);
+}
+
+.vt-edit-modal .modal-close-button {
+  top: var(--vt-space-3);
+  right: var(--vt-space-3);
+  width: 34px;
+  height: 34px;
+}
+
+.vt-edit-modal--saving .modal-close-button {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.vt-edit-header {
+  padding-right: 48px;
+}
+
+.vt-edit-title {
+  margin: 0;
+  font-size: var(--font-ui-large);
+  line-height: 1.25;
+  color: var(--vt-text);
+}
+
+.vt-edit-subtitle {
+  margin-top: var(--vt-space-1);
+  font-size: var(--font-ui-small);
+  color: var(--vt-text-muted);
+}
+
+.vt-edit-modal .vt-capture-field {
+  align-items: flex-start;
+}
+
+.vt-edit-modal .vt-capture-backdrop,
+.vt-edit-modal .vt-capture-input {
+  min-height: 72px;
+  max-height: 160px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.vt-edit-properties {
+  margin-top: var(--vt-space-2);
+}
+
+.vt-edit-property-bar {
+  display: flex;
+  gap: var(--vt-space-2);
+}
+
+.vt-edit-property-trigger {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 40px;
+  flex: 1;
+  gap: var(--vt-space-2);
+  padding: var(--vt-space-1) var(--vt-space-2);
+  color: var(--vt-text);
+  background: transparent;
+  border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-s);
+  box-shadow: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.vt-capture-modal button.vt-edit-property-trigger,
+.vt-capture-modal button.vt-edit-menu-item,
+.vt-capture-modal button.vt-calendar-nav,
+.vt-capture-modal button.vt-calendar-day {
+  box-shadow: none;
+}
+
+.vt-capture-modal button.vt-edit-property-trigger:focus-visible,
+.vt-capture-modal button.vt-edit-menu-item:focus-visible,
+.vt-capture-modal button.vt-calendar-nav:focus-visible,
+.vt-capture-modal button.vt-calendar-day:focus-visible {
+  box-shadow: var(--vt-focus-ring);
+}
+
+.vt-edit-property-trigger:hover,
+.vt-edit-property-trigger[aria-expanded="true"] {
+  background: var(--vt-bg-hover);
+}
+
+.vt-edit-property-trigger:focus-visible,
+.vt-edit-menu-item:focus-visible,
+.vt-calendar-nav:focus-visible,
+.vt-calendar-day:focus-visible {
+  outline: none;
+  box-shadow: var(--vt-focus-ring);
+}
+
+.vt-edit-property-icon,
+.vt-edit-property-chevron,
+.vt-edit-menu-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: var(--vt-text-muted);
+}
+
+.vt-edit-property-icon svg,
+.vt-edit-property-chevron svg,
+.vt-edit-menu-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.vt-edit-property-trigger:first-child .vt-edit-property-icon {
+  color: var(--vt-tok-date);
+}
+
+.vt-edit-property-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.vt-edit-property-label {
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-faint);
+}
+
+.vt-edit-property-value {
+  overflow: hidden;
+  font-size: var(--font-ui-small);
+  color: var(--vt-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vt-edit-property-chevron {
+  transition: transform 120ms var(--vt-ease-out);
+}
+
+.vt-edit-property-trigger[aria-expanded="true"] .vt-edit-property-chevron {
+  transform: rotate(180deg);
+}
+
+.vt-edit-property-panel {
+  width: calc(50% - var(--vt-space-1));
+  margin-top: var(--vt-space-2);
+  padding: var(--vt-space-1);
+  background: var(--vt-bg-alt);
+  border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-m);
+}
+
+.vt-edit-property-panel--priority {
+  margin-left: calc(50% + var(--vt-space-1));
+}
+
+.vt-edit-menu-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.vt-edit-menu-item {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 40px;
+  gap: var(--vt-space-2);
+  padding: var(--vt-space-1) var(--vt-space-2);
+  color: var(--vt-text);
+  background: transparent;
+  border: none;
+  border-radius: var(--vt-radius-s);
+  box-shadow: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.vt-capture-modal button.vt-edit-menu-item,
+.vt-capture-modal button.vt-calendar-nav,
+.vt-capture-modal button.vt-calendar-day {
+  background: transparent;
+  border: none;
+}
+
+.vt-edit-menu-item:hover,
+.vt-edit-menu-item--selected {
+  background: var(--vt-bg-hover);
+}
+
+.vt-capture-modal button.vt-edit-menu-item:hover,
+.vt-capture-modal button.vt-edit-menu-item.vt-edit-menu-item--selected,
+.vt-capture-modal button.vt-calendar-nav:hover,
+.vt-capture-modal button.vt-calendar-day:hover {
+  background: var(--vt-bg-hover);
+}
+
+.vt-edit-menu-label {
+  font-size: var(--font-ui-small);
+}
+
+.vt-edit-menu-detail {
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-faint);
+}
+
+.vt-edit-menu-item--selected .vt-edit-menu-label {
+  font-weight: 600;
+}
+
+.vt-edit-menu-item--clear {
+  color: var(--vt-text-muted);
+}
+
+.vt-edit-priority-list .vt-edit-menu-item[data-priority="p1"] .vt-edit-menu-icon {
+  color: var(--vt-p1);
+}
+
+.vt-edit-priority-list .vt-edit-menu-item[data-priority="p2"] .vt-edit-menu-icon {
+  color: var(--vt-p2);
+}
+
+.vt-edit-priority-list .vt-edit-menu-item[data-priority="p3"] .vt-edit-menu-icon {
+  color: var(--vt-p3);
+}
+
+.vt-edit-priority-list .vt-edit-menu-item[data-priority="p4"] .vt-edit-menu-icon,
+.vt-edit-priority-list .vt-edit-menu-item[data-priority="none"] .vt-edit-menu-icon {
+  color: var(--vt-p4);
+}
+
+.vt-edit-calendar {
+  margin-top: var(--vt-space-1);
+  padding: var(--vt-space-2);
+  border-top: 1px solid var(--vt-border);
+}
+
+.vt-calendar-header {
+  display: grid;
+  grid-template-columns: var(--vt-hit) minmax(0, 1fr) var(--vt-hit);
+  align-items: center;
+  margin-bottom: var(--vt-space-1);
+}
+
+.vt-calendar-month {
+  font-size: var(--font-ui-small);
+  font-weight: 600;
+  text-align: center;
+}
+
+.vt-calendar-nav,
+.vt-calendar-day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--vt-text);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.vt-calendar-nav {
+  width: var(--vt-hit);
+  height: var(--vt-hit);
+  border-radius: var(--vt-radius-s);
+}
+
+.vt-calendar-nav:hover,
+.vt-calendar-day:hover {
+  background: var(--vt-bg-hover);
+}
+
+.vt-calendar-nav svg {
+  width: 16px;
+  height: 16px;
+}
+
+.vt-calendar-weekdays,
+.vt-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--vt-space-0);
+}
+
+.vt-calendar-weekdays span {
+  padding: var(--vt-space-1) 0;
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-faint);
+  text-align: center;
+}
+
+.vt-calendar-day {
+  min-height: 40px;
+  border-radius: var(--vt-radius-s);
+  font-size: var(--font-ui-small);
+}
+
+.vt-calendar-day--outside {
+  color: var(--vt-text-faint);
+}
+
+.vt-calendar-day--today {
+  color: var(--vt-accent);
+  font-weight: 600;
+}
+
+.vt-calendar-day--selected {
+  color: var(--vt-accent-text);
+  background: var(--vt-accent);
+  font-weight: 600;
+}
+
+.vt-capture-modal button.vt-calendar-day--selected,
+.vt-capture-modal button.vt-calendar-day--selected:hover {
+  color: var(--vt-accent-text);
+  background: var(--vt-accent);
+}
+
+.vt-edit-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--vt-space-3);
+  padding-top: var(--vt-space-1);
+}
+
+.vt-edit-shortcuts {
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-faint);
+}
+
+.vt-edit-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--vt-space-2);
+}
+
+.vt-edit-cancel,
+.vt-edit-save {
+  min-height: 34px;
+  padding: var(--vt-space-1) var(--vt-space-3);
+  border-radius: var(--vt-radius-s);
+  font-size: var(--font-ui-small);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vt-edit-cancel {
+  color: var(--vt-text-muted);
+  background: transparent;
+  border: 1px solid var(--vt-border);
+}
+
+.vt-edit-cancel:hover {
+  color: var(--vt-text);
+  background: var(--vt-bg-hover);
+}
+
+.vt-edit-save {
+  color: var(--vt-accent-text);
+  background: var(--vt-accent);
+  border: 1px solid var(--vt-accent);
+}
+
+.vt-edit-cancel:focus-visible,
+.vt-edit-save:focus-visible {
+  outline: none;
+  box-shadow: var(--vt-focus-ring);
+}
+
+.vt-edit-cancel:disabled,
+.vt-edit-save:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.vt-capture-modal--sheet.vt-edit-modal .vt-edit-footer {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.vt-capture-modal--sheet.vt-edit-modal .vt-edit-property-trigger,
+.vt-capture-modal--sheet.vt-edit-modal .vt-edit-menu-item,
+.vt-capture-modal--sheet.vt-edit-modal .vt-calendar-day {
+  min-height: var(--vt-hit);
+}
+
+.vt-capture-modal--sheet.vt-edit-modal .vt-edit-property-panel {
+  width: 100%;
+  margin-left: 0;
+}
+
+@media (max-width: 560px) {
+  .vt-edit-property-panel {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+.vt-capture-modal--sheet.vt-edit-modal .vt-edit-calendar {
+  overflow-x: auto;
+}
+
+.vt-capture-modal--sheet.vt-edit-modal .vt-calendar-weekdays,
+.vt-capture-modal--sheet.vt-edit-modal .vt-calendar-grid {
+  min-width: calc(var(--vt-hit) * 7);
+  grid-template-columns: repeat(7, var(--vt-hit));
+  gap: 0;
+}
+
+.vt-capture-modal--sheet.vt-edit-modal .vt-edit-actions {
+  width: 100%;
+}
+
+.vt-capture-modal--sheet.vt-edit-modal .vt-edit-actions button {
+  min-height: var(--vt-hit);
+  flex: 1;
+}
+
+.vt-capture-input:focus {
+  outline: none;
+  border-color: var(--vt-accent);
+  box-shadow: none;
+}
+
+.vt-capture-input::placeholder {
+  color: var(--vt-text-faint);
+}
+
+.vt-capture-hint {
+  position: absolute;
+  right: var(--vt-space-3);
+  z-index: 2;
+  padding: var(--vt-space-0) var(--vt-space-1);
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-faint);
+  background: var(--vt-bg-alt);
+  border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-s);
+  pointer-events: none;
+}
+
+/* '#' autocomplete menu - anchored under the input, DESIGN §9.6 */
+.vt-suggest-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  margin-top: var(--vt-space-1);
+  padding: var(--vt-space-1);
+  background: var(--vt-bg-alt);
+  border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-s);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.vt-suggest-option {
+  display: flex;
+  align-items: center;
+  gap: var(--vt-space-1);
+  padding: var(--vt-space-1) var(--vt-space-2);
+  border-radius: var(--vt-radius-s);
+  font-size: var(--font-ui-small);
+  color: var(--vt-text);
+  cursor: pointer;
+}
+
+.vt-suggest-option--active,
+.vt-suggest-option:hover {
+  background: var(--vt-bg-hover);
+}
+
+.vt-suggest-hash {
+  font-weight: 600;
+}
+
+.vt-suggest-area {
+  color: var(--vt-text);
+}
+
+/* keyword-suggestion tag in the destination line - Tab files as #<area> */
+.vt-dest-suggest-tag {
+  font-weight: 600;
+}
+
+/* token pills painted behind the live text */
+.vt-tok {
+  border-radius: var(--vt-radius-pill);
+  background: color-mix(in srgb, var(--vt-tok-base, var(--vt-accent)) var(--vt-tint), transparent);
+  transition: background-color 100ms var(--vt-ease-out);
+}
+
+.vt-tok--active {
+  background: color-mix(in srgb, var(--vt-tok-base, var(--vt-accent)) var(--vt-tint-strong), transparent);
+}
+
+.vt-tok--date { --vt-tok-base: var(--vt-tok-date); }
+.vt-tok--scheduled {
+  --vt-tok-base: var(--vt-tok-date);
+  text-decoration: underline dotted var(--vt-tok-date);
+  text-underline-offset: 3px;
+}
+.vt-tok--area { --vt-tok-base: var(--vt-tok-area); }
+.vt-tok--recurrence { --vt-tok-base: var(--vt-tok-recur); }
+.vt-tok--priority-p1 { --vt-tok-base: var(--vt-p1); }
+.vt-tok--priority-p2 { --vt-tok-base: var(--vt-p2); }
+.vt-tok--priority-p3 { --vt-tok-base: var(--vt-p3); }
+.vt-tok--priority-p4 { --vt-tok-base: var(--vt-p4); }
+.vt-tok--owner {
+  --vt-tok-base: transparent;
+  background: var(--vt-bg-hover);
+}
+
+/* parsed-preview row (real row component) under a hairline */
+.vt-capture-preview {
+  padding-top: var(--vt-space-2);
+  border-top: 1px solid var(--vt-border);
+}
+
+.vt-capture-preview.vt-xfade {
+  animation: vt-preview-xfade 120ms var(--vt-ease-std);
+}
+
+@keyframes vt-preview-xfade {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+/* the preview ring is display-only; drop the pointer affordance */
+.vt-capture-preview .vt-ring {
+  cursor: default;
+}
+
+/* destination indicator */
+.vt-capture-dest {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--vt-space-1);
+  font-size: var(--font-ui-small);
+  color: var(--vt-text-muted);
+}
+
+.vt-dest-arrow {
+  color: var(--vt-text-faint);
+}
+
+.vt-dest-sep {
+  color: var(--vt-text-faint);
+}
+
+
+.vt-capture-dest.vt-dest--inbox {
+  color: var(--vt-text-faint);
+}
+
+.vt-dest-hint {
+  color: var(--vt-text-faint);
+}
+
+.vt-capture-error {
+  font-size: var(--font-ui-small);
+  color: var(--vt-text-muted);
+}
+
+/* ---- v2: segmented tab control (§9) ------------------------------------- */
+
+/* Three equal-width pills separated by real space (not a sliced single bar): no enclosing track
+   fill, so inactive segments read transparent and the active one lifts on an accent tint. */
+.vt-tabs {
+  display: flex;
+  gap: var(--vt-space-2);
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto var(--vt-space-3);
+}
+
+.vault-tasks-view button.vt-tab {
+  flex: 1 1 0;
+  min-height: 30px;
+  padding: var(--vt-space-1) var(--vt-space-3);
+  font-size: var(--font-ui-small);
+  font-weight: 500;
+  color: var(--vt-text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  border-radius: var(--vt-radius-s);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vt-space-2);
+  transition: background-color 120ms var(--vt-ease-out), color 120ms var(--vt-ease-out), box-shadow 120ms var(--vt-ease-out);
+}
+
+.vt-tab[data-tab="today"] { --vt-tab-color: var(--color-green); }
+.vt-tab[data-tab="upcoming"] { --vt-tab-color: var(--color-purple); }
+.vt-tab[data-tab="all"] { --vt-tab-color: var(--color-blue); }
+
+.vt-tab-icon {
+  display: inline-flex;
+  color: var(--vt-tab-color);
+}
+
+.vt-tab-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.vault-tasks-view button.vt-tab:not(.vt-tab--active):hover {
+  color: var(--vt-text);
+  background: var(--vt-bg-hover);
+}
+
+.vault-tasks-view button.vt-tab--active {
+  color: var(--vt-text);
+  background: color-mix(in srgb, var(--vt-tab-color) var(--vt-tint), transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--vt-tab-color) 35%, transparent);
+  font-weight: 600;
+}
+
+.vt-tab:focus-visible {
+  outline: none;
+  box-shadow: var(--vt-focus-ring);
+}
+
+.vt-mobile .vt-tab {
+  min-height: var(--vt-hit);
+}
+
+/* ---- v2: filter pills (§9) ---------------------------------------------- */
+
+.vt-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--vt-space-1);
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto var(--vt-space-4);
+}
+
+.vt-pill {
+  padding: var(--vt-space-0) var(--vt-space-2);
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-muted);
+  background: var(--vt-bg-alt);
+  border: 1px solid var(--vt-border);
+  border-radius: var(--vt-radius-pill);
+  cursor: pointer;
+  transition: background-color 100ms var(--vt-ease-out), color 100ms var(--vt-ease-out);
+}
+
+.vt-pill:hover {
+  color: var(--vt-text);
+  background: var(--vt-bg-hover);
+}
+
+/* Active pill labels and tints use --vt-area-color set per pill,
+   giving the row a legible-but-colorful "this filter is on" cue that matches the chip/dot hue. */
+.vt-pill--active {
+  color: var(--vt-area-color, var(--vt-accent));
+  background: color-mix(in srgb, var(--vt-area-color, var(--vt-accent)) var(--vt-tint-strong), transparent);
+  border-color: color-mix(in srgb, var(--vt-area-color, var(--vt-accent)) 40%, transparent);
+}
+
+.vt-pill:focus-visible,
+.vt-filter-clear:focus-visible {
+  outline: none;
+  box-shadow: var(--vt-focus-ring);
+}
+
+.vt-filter-clear {
+  margin-left: var(--vt-space-1);
+  padding: var(--vt-space-0) var(--vt-space-1);
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-faint);
+  background: transparent;
+  border: none;
+  border-radius: var(--vt-radius-s);
+  cursor: pointer;
+}
+
+.vt-filter-clear:hover {
+  color: var(--vt-text-muted);
+}
+
+.vt-mobile .vt-pill {
+  min-height: var(--vt-hit);
+  padding: var(--vt-space-1) var(--vt-space-3);
+}
+
+.vt-mobile .vt-filter-clear {
+  min-height: var(--vt-hit);
+}
+
+/* ---- v2: group heads, sub-labels, collapsibles (§9) --------------------- */
+
+.vt-section-faint {
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-faint);
+}
+
+/* Small area-color dot before an All-tab group label (matches the stale-dot scale). */
+.vt-group-dot {
+  flex: 0 0 auto;
+  align-self: center;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vt-area-color, var(--vt-text-faint));
+}
+
+.vt-section-label--faint {
+  color: var(--vt-text-faint);
+}
+
+.vt-sublabel {
+  padding: var(--vt-space-2) var(--vt-space-4) var(--vt-space-0);
+  font-size: var(--font-ui-smaller);
+  color: var(--vt-text-faint);
+}
+
+/* Collapsed Later / Completed toggle bar: chevron + label + count centered on both axes so the
+   bar's content sits dead-center (fixes the off-center Later bar). */
+.vt-group-toggle {
+  width: 100%;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vt-space-2);
+  padding: 0 var(--vt-space-4);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vt-group-toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--vt-focus-ring);
+  border-radius: var(--vt-radius-s);
+}
+
+.vt-chevron {
+  display: inline-block;
+  color: var(--vt-text-faint);
+  transition: transform 120ms var(--vt-ease-out);
+}
+
+.vt-chevron--open {
+  transform: rotate(90deg);
+}
+
+.vt-mobile .vt-group-toggle {
+  min-height: var(--vt-hit);
+  align-items: center;
+}
+
+/* ---- v2: unfiled inbox hint --------------------------------------------- */
+
+.vt-unfiled-hint {
+  font-size: var(--font-ui-smaller);
+  font-style: italic;
+  color: var(--vt-text-faint);
+}
+
+/* ---- v2: completed history rows ----------------------------------------- */
+
+.vt-row--done .vt-task-title {
+  text-decoration: line-through;
+  color: var(--vt-text-faint);
+}
+
+.vt-row--done .vt-ring {
+  --vt-ring-color: var(--vt-text-faint);
+  background: color-mix(in srgb, var(--vt-text-faint) 30%, transparent);
+}
+
+.vt-row--done:hover {
+  background: transparent;
+}
+
+/* ---- v2: edit affordance ------------------------------------------------ */
+
+.vault-tasks-view button.vt-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-size: var(--font-ui-smaller);
+  line-height: 1;
+  color: var(--vt-text-faint);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: var(--vt-radius-s);
+  cursor: pointer;
+  opacity: 0.68;
+  transition: opacity 100ms var(--vt-ease-out), color 100ms var(--vt-ease-out), background-color 100ms var(--vt-ease-out);
+}
+
+.vt-edit-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.vt-task-row:hover .vt-edit-btn,
+.vt-focusable:focus-visible .vt-edit-btn,
+.vt-task-row:focus-within .vt-edit-btn {
+  opacity: 1;
+}
+
+.vault-tasks-view button.vt-edit-btn:hover {
+  color: var(--vt-text);
+  background: var(--vt-bg-hover);
+}
+
+.vt-edit-btn:focus-visible {
+  outline: none;
+  opacity: 1;
+  box-shadow: var(--vt-focus-ring);
+}
+
+/* Mobile has no hover; the row-text tap zone opens edit, so keep the pencil hidden. */
+.vt-mobile .vt-edit-btn {
+  display: none;
+}
+
+/* Obsidian panes can be phone-width on desktop. Reflow metadata under the title based on the
+   component's own width, not Platform.isMobile, so long provenance never crushes the task name. */
+@container (max-width: 540px) {
+  .vt-task-row {
+    display: grid;
+    grid-template-columns: var(--vt-ring-size) minmax(0, 1fr);
+    column-gap: var(--vt-space-3);
+    row-gap: var(--vt-space-1);
+  }
+
+  .vt-ring {
+    grid-column: 1;
+    grid-row: 1;
+    margin-top: var(--vt-space-0);
+  }
+
+  .vt-row-main {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .vt-row-meta {
+    grid-column: 2;
+    grid-row: 2;
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .vt-mobile .vt-row-meta {
+    flex-basis: auto;
+    padding-left: 0;
+  }
+}
+
+/* ---- reduced motion ----------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .vt-capture-modal,
+  .vt-capture-modal--sheet,
+  .vt-capture-preview.vt-xfade,
+  .vt-tok,
+  .vt-fab,
+  .vt-tab,
+  .vt-pill,
+  .vt-chevron,
+  .vt-edit-btn,
+  .vt-edit-property-chevron {
+    animation: none;
+    transition: none;
+  }
+
+  .vt-task-row,
+  .vt-ring,
+  .vt-proposed-row,
+  .vt-area-chip,
+  .vt-action {
+    transition: none;
+  }
+
+  .vt-completing .vt-check path {
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+
+  .vt-check-flash .vt-check {
+    animation: none;
+  }
+
+  .vt-collapsing {
+    transition: none;
+  }
+
+  .vt-reduced {
+    opacity: 0.5;
+  }
+}

@@ -1,0 +1,124 @@
+# Taskline
+
+Taskline is an Obsidian task dashboard and quick-capture plugin. It reads tasks from the notes you choose, groups them into a focused Today view, and writes changes back to Markdown.
+
+Taskline does not create task notes during setup. You keep control of every source path, heading, route, and display group.
+
+## Features
+
+- Today, Upcoming, and All task views
+- Natural-language capture for dates, priorities, recurrence, tags, and owners
+- Configurable task sources, headings, areas, and capture routes
+- Inline task editing, status changes, and completion
+- Desktop and mobile layouts with keyboard navigation
+- Local-only operation with no accounts, telemetry, or network requests
+- Optional proposal rows for reviewing suggested completions or cancellations
+
+## Requirements
+
+- Obsidian 1.5.0 or later
+- Markdown task notes that use `- [ ] Task` syntax
+- The [Tasks plugin](https://github.com/obsidian-tasks-group/obsidian-tasks) only if you complete recurring tasks through Taskline
+
+Taskline can read and edit non-recurring tasks without the Tasks plugin.
+
+## Install
+
+Taskline is not yet listed in the Obsidian Community plugins directory.
+
+To install a release manually:
+
+1. Download `main.js`, `manifest.json`, and `styles.css` from the release.
+2. Create `<vault>/.obsidian/plugins/vault-tasks/`.
+3. Place all three files in that folder.
+4. Reload Obsidian.
+5. Enable **Taskline** under **Settings** -> **Community plugins**.
+
+The folder is named `vault-tasks` because Obsidian requires it to match the stable plugin ID in `manifest.json`.
+
+## Configure
+
+Open **Settings** -> **Taskline**. Taskline starts unconfigured and inactive. Add the source notes and headings you want, then select **Apply**.
+
+The settings UI accepts JSON arrays so related routes and groups can be edited together. This minimal configuration reads one note and captures new tasks under its `Inbox` heading:
+
+**Task sources**
+
+```json
+[
+  {
+    "id": "tasks",
+    "label": "Tasks",
+    "path": "Tasks.md",
+    "role": "tasks",
+    "editPolicy": "stay",
+    "proposals": false
+  }
+]
+```
+
+**Areas**
+
+```json
+[
+  {
+    "id": "inbox",
+    "label": "Inbox",
+    "sourceId": "tasks",
+    "heading": "Inbox"
+  }
+]
+```
+
+**Display order**
+
+```json
+["inbox"]
+```
+
+**Fallback capture destination**
+
+```json
+{
+  "sourceId": "tasks",
+  "heading": "Inbox"
+}
+```
+
+Source paths must be relative to the vault. Taskline rejects absolute paths and paths containing `..`.
+
+## Capture Tasks
+
+Run **Taskline: Add task** from the command palette. Taskline recognizes common shorthand:
+
+```text
+Send report by tomorrow !! #work
+Plan review next week #planning
+Publish notes every Friday @alex
+```
+
+- `!`, `!!`, and `!!!` set medium, high, and urgent priority. `priority:low` sets low priority.
+- Dates such as `today`, `tomorrow`, `next week`, `Jul 5`, and `2026-07-05` set the due date.
+- `daily`, `weekly`, and phrases such as `every Friday` set recurrence.
+- `#tag` selects a configured route or keeps a generic tag.
+- `@owner` records an owner.
+
+Taskline writes Tasks-compatible signifiers at the end of each task line.
+
+## Development
+
+```bash
+npm ci
+npm test
+npm run build
+```
+
+The production build writes `main.js` at the repository root.
+
+## Privacy and Security
+
+Taskline reads and changes only the vault files configured as task sources. It does not send data off-device. See [SECURITY.md](SECURITY.md) to report a vulnerability.
+
+## License
+
+[MIT](LICENSE)
